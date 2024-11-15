@@ -14,10 +14,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String content;
+    @Column(nullable = false)
+    private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_EMAIL")
-    private User user; // 게시글 작성자
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String content;
 }

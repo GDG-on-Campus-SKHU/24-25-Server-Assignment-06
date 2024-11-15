@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostDto {
+    private String email;
     private String title;
     private String content;
 }

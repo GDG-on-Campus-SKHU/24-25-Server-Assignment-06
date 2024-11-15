@@ -1,6 +1,7 @@
 package com.example.kiwoong.jwt;
 
 import com.example.kiwoong.domain.User;
+import com.example.kiwoong.domain.Admin;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +44,19 @@ public class TokenProvider {
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim(ROLE_CLAIM, user.getRole().name())
+                .setExpiration(accessTokenExpiredTime)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createAccessToken(Admin admin) { // Admin 객체를 위한 메서드 추가
+        long nowTime = (new Date().getTime());
+
+        Date accessTokenExpiredTime = new Date(nowTime + accessTokenValidityTime);
+
+        return Jwts.builder()
+                .setSubject(admin.getId().toString())
+                .claim(ROLE_CLAIM, "ADMIN") // ADMIN 역할 설정
                 .setExpiration(accessTokenExpiredTime)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

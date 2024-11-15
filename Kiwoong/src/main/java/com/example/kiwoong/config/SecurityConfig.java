@@ -5,6 +5,7 @@ import com.example.kiwoong.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,7 +31,9 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/gdg/**").permitAll() // 모든 사용자에게 허용하는 경로
-                        .requestMatchers("/posts").authenticated() // 게시글 작성은 인증된 사용자만
+                        .requestMatchers("/admins/signUp").permitAll() // 모든 사용자에게 허용하는 경로
+                        .requestMatchers("/admins/**").hasRole("ADMIN") // ADMIN만
+                        .requestMatchers("/posts").authenticated() // 작성은 인증된 사용자만
                         .anyRequest().authenticated() // 나머지 모든 요청은 인증 필요
                 )
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
