@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@ResponseBody
+@RestController
 @RequiredArgsConstructor
 public class JoinController {
 
@@ -17,7 +18,7 @@ public class JoinController {
 
     @PostMapping("/join")
     //reponseEntity 해야됨
-    public String signUp(JoinDto joinDto) {
+    public String signUp(@RequestBody JoinDto joinDto) {
         joinService.joinProcess(joinDto);
         return "ok";
     }

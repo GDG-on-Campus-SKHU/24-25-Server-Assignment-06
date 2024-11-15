@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN") //Admin 요청은 인가 설정
                         .anyRequest().authenticated()) //그 외 요청 전부 인증 받자
                 //커스텀된 필터가 disable된 필터 자리에 추가
+                //config에서도 authenticationManager를 추가해줘야한다.
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class)
                 .build();
 

@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //로그인폼 disable할 경우 SpringSecurity 필터를 사용못하기 때문에, 커스텀 LoginFilter생성
+//LoginFilter는 UsernamePasswordAuthenticationFilter의 정의에 따라서 /login 경로로 오는 POST 요청을 검증하게 된다. controller로 넘어가기 전에 필터에서 처리하기 때문
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -24,19 +25,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String password = obtainPassword(request);
 
         //탈취한 username과 password를 Token에 전달하고 토큰을 곧 매니저한테 전달할 것임
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
         //최종적으로 authToken을 authenticate메서드가 검증할 것임 - 검증 방법 - DB에서 정보 꺼내오고 UserDetailsService에서 검증할거임
         return authenticationManager.authenticate(authToken);
     }
 
-    //authenticationManager의 authenticate메서드가 검증에 성공할 경우 만들어질 객체
+    //authenticationManager의 authenticate메서드가 검증에 성공할 경우 동작할 객체
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication){
+        System.out.println("successful authentication");
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed){
+        System.out.println("unsuccessful authentication");
     }
 }
 
