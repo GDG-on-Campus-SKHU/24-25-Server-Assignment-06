@@ -1,0 +1,22 @@
+package com.example.inseok.User.dto.response;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+public class TokenDto {
+    private final String accessToken;
+
+    @Builder
+    public TokenDto(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public static TokenDto from(String accessToken) {
+        return TokenDto.builder()
+                .accessToken(accessToken)
+                .build();
+    }
+}
+
+
