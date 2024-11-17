@@ -26,7 +26,7 @@ public class SecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/trip/**","/users/login", "/users/signUp").permitAll() // 인증 없이 접근 가능
+                        .requestMatchers("/users/login", "/users/signUp").permitAll() // 인증 없이 접근 가능
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class) // JwtFilter 추가
                 .build();
