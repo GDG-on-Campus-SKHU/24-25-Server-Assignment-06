@@ -4,7 +4,6 @@ import com.example.sanghwajwt.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,26 +14,25 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 //로그인폼 disable할 경우 SpringSecurity 필터(UsernamePasswordAuthenticationFilter)를 사용못하기 때문에, 커스텀 LoginFilter생성
 //LoginFilter는 UsernamePasswordAuthenticationFilter의 정의에 따라서 /login 경로로 오는 POST 요청을 검증하게 된다. controller로 넘어가기 전에 필터에서 처리하기 때문
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+    private final Long expiredMs;
+
     private static final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
     private final AuthenticationManager authenticationManager;
 
     private final JWTUtil jwtUtil;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, Long expiredMs) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.expiredMs = expiredMs;
     }
-
-    @Value("${jwt.access-token-validity-in-milliseconds}")
-    private Long expiredMss;
 
     //UPA에서 필요로 하는 메서드, 왜 필요한지 서치
     @Override
@@ -44,7 +42,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String password = obtainPassword(request);
 
         //탈취한 username과 password를 Token에 전달하고 토큰을 곧 매니저한테 전달할 것임
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
         //최종적으로 authToken을 authenticate메서드가 검증할 것임 - 검증 방법 - DB에서 정보 꺼내오고 UserDetailsService에서 검증할거임
         return authenticationManager.authenticate(authToken);
@@ -54,20 +52,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //이제 여기서 JWT를 발급하면됨
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication){
-
         //인자로 받은 authentication을 customUserDetails에 담기
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+//        logger.info("Username: {}", customUserDetails.getUsername());
+//        logger.info("Authorities: {}", customUserDetails.getAuthorities());
+
         // username 추출
         String username = customUserDetails.getUsername();
-        //
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        if (authorities != null && !authorities.isEmpty()) {
+            if (authorities != null && !authorities.isEmpty()) {
             Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
             if (iterator.hasNext()) {
                 GrantedAuthority auth = iterator.next();
                 String role = auth.getAuthority();
                 // JWT 토큰 생성
-                String token = jwtUtil.createJwt(username, "Role_" + role, expiredMss);
+                logger.info("expiredMs ::{}", expiredMs);
+                String token = jwtUtil.createJwt(username, role, expiredMs);
                 response.addHeader("Authorization", "Bearer " + token);
             } else {
                 // 처리할 권한이 없을 때의 로직

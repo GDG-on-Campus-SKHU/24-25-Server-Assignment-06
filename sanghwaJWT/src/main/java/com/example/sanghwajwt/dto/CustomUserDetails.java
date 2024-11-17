@@ -32,7 +32,7 @@ public class CustomUserDetails implements UserDetails {
             }
         });
 
-        return List.of();
+        return collection;
     }
 
     @Override

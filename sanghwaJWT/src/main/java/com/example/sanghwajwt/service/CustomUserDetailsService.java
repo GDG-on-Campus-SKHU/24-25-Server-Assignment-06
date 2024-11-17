@@ -27,11 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        logger.info("username :: {}", username);
 
         if (user != null) {
-            //UserDetails에 담아서 return하면 manager가 검증함
             logger.info("user 전달완료 ::{}", user);
+            //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
             return new CustomUserDetails(user);
         }
-        //error
+        //fix
         //UserDetailsService returned null, which is an interface contract violation
         return null;
     }

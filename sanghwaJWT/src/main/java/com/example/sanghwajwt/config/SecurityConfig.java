@@ -3,6 +3,7 @@ package com.example.sanghwajwt.config;
 import com.example.sanghwajwt.jwt.JWTUtil;
 import com.example.sanghwajwt.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,9 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
 
     private final JWTUtil jwtUtil;
+
+    @Value("${jwt.access-token-validity-in-milliseconds}")
+    private Long expiredMs;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -49,7 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join").permitAll()
                         .anyRequest().authenticated());
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, expiredMs), UsernamePasswordAuthenticationFilter.class);
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -38,7 +38,7 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, String role, @Value("${jwt.access-token-validity-in-milliseconds}") Long expiredMs){
+    public String createJwt(String username, String role, long expiredMs){
         return Jwts.builder()
                 //토큰을 만들때 claim메서드로 username과 role을 넣어줌
                 .claim("username", username)
