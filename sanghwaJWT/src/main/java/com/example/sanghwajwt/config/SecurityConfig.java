@@ -52,7 +52,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join/**").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN") //admin Role을 가지고 있는 사람만 컨트롤러에 접근 가능
+                        .requestMatchers("/admin/**", "/post/allPost", "/post/deletePost/**").hasRole("ADMIN") //admin Role을 가지고 있는 사람만 컨트롤러에 접근 가능
                         .anyRequest().authenticated());
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);

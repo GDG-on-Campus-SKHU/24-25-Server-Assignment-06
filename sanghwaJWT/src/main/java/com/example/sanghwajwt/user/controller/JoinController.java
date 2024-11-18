@@ -1,13 +1,11 @@
-package com.example.sanghwajwt.controller;
+package com.example.sanghwajwt.user.controller;
 
-import com.example.sanghwajwt.dto.JoinDto;
-import com.example.sanghwajwt.service.JoinService;
-import lombok.NoArgsConstructor;
+import com.example.sanghwajwt.user.dto.JoinAdminDto;
+import com.example.sanghwajwt.user.dto.JoinDto;
+import com.example.sanghwajwt.user.sevice.JoinService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,6 +21,12 @@ public class JoinController {
     //reponseEntity 해야됨
     public String signUp(@RequestBody JoinDto joinDto) {
         joinService.joinProcess(joinDto);
+        return "ok";
+    }
+
+    @PostMapping("/join/admin")
+    public String signUpAdmin(@RequestBody JoinAdminDto joinAdminDto) {
+        joinService.joinAdminProcess(joinAdminDto);
         return "ok";
     }
 }

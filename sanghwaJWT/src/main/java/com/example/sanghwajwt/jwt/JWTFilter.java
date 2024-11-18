@@ -1,7 +1,7 @@
 package com.example.sanghwajwt.jwt;
 
-import com.example.sanghwajwt.dto.CustomUserDetails;
-import com.example.sanghwajwt.entity.UserEntity;
+import com.example.sanghwajwt.user.dto.CustomUserDetails;
+import com.example.sanghwajwt.user.entity.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

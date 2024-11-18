@@ -1,8 +1,8 @@
-package com.example.sanghwajwt.service;
+package com.example.sanghwajwt.user.sevice;
 
-import com.example.sanghwajwt.dto.CustomUserDetails;
-import com.example.sanghwajwt.entity.UserEntity;
-import com.example.sanghwajwt.repository.UserRepository;
+import com.example.sanghwajwt.user.dto.CustomUserDetails;
+import com.example.sanghwajwt.user.entity.UserEntity;
+import com.example.sanghwajwt.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

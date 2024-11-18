@@ -1,12 +1,11 @@
 package com.example.sanghwajwt.jwt;
 
-import com.example.sanghwajwt.dto.CustomUserDetails;
+import com.example.sanghwajwt.user.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,10 +53,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication){
         //인자로 받은 authentication을 customUserDetails에 담기
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-//        logger.info("Username: {}", customUserDetails.getUsername());
-//        logger.info("Authorities: {}", customUserDetails.getAuthorities());
-
         // username 추출
         String username = customUserDetails.getUsername();
 

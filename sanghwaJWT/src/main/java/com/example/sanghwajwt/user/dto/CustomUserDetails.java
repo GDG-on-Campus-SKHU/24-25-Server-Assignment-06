@@ -1,15 +1,12 @@
-package com.example.sanghwajwt.dto;
+package com.example.sanghwajwt.user.dto;
 
 
-import com.example.sanghwajwt.entity.UserEntity;
-import lombok.RequiredArgsConstructor;
+import com.example.sanghwajwt.user.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 

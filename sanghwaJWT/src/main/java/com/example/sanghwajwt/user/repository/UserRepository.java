@@ -1,6 +1,6 @@
-package com.example.sanghwajwt.repository;
+package com.example.sanghwajwt.user.repository;
 
-import com.example.sanghwajwt.entity.UserEntity;
+import com.example.sanghwajwt.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {

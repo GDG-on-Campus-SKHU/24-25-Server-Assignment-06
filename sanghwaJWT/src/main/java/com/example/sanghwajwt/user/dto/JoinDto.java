@@ -1,4 +1,4 @@
-package com.example.sanghwajwt.dto;
+package com.example.sanghwajwt.user.dto;
 
 import lombok.Getter;
 import org.springframework.scheduling.support.SimpleTriggerContext;
