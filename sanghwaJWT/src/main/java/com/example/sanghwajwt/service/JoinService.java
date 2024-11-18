@@ -19,12 +19,13 @@ public class JoinService {
         if(isExist){
             return;
         }
+
         //Role은 아직
         UserEntity userEntity = userRepository.save(UserEntity.builder()
                 .username(joinDto.getUsername())
                 .password(passwordEncoder.encode(joinDto.getPassword()))
-                .role("ROLE_USER")
+                .role("ROLE_ADMIN")
                 .build());
-
+        System.out.println("Role설정 완료");
     }
 }

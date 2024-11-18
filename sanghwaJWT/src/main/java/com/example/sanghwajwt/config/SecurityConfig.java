@@ -1,5 +1,6 @@
 package com.example.sanghwajwt.config;
 
+import com.example.sanghwajwt.jwt.JWTFilter;
 import com.example.sanghwajwt.jwt.JWTUtil;
 import com.example.sanghwajwt.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +51,11 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
+                        .requestMatchers("/login", "/", "/join/**").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN") //admin Role을 가지고 있는 사람만 컨트롤러에 접근 가능
                         .anyRequest().authenticated());
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, expiredMs), UsernamePasswordAuthenticationFilter.class);
         http
