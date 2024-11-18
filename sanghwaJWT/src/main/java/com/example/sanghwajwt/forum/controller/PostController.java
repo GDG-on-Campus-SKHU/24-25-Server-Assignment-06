@@ -30,7 +30,7 @@ public class PostController {
     //게시글 수정 - User의 ID를 검증해서 본인의 게시글만 수정 가능하게끔 해야한다, 일단 모두에게 열어두기
     @PatchMapping("/{id}")
     public ResponseEntity<PostResponseDto> updateById(@PathVariable Long id, @RequestBody PostSaveDto postSaveDto) {
-        return new ResponseEntity<>(postService.updatePost(id, postSaveDto),HttpStatus.OK);
+        return new ResponseEntity<>(postService.updatePost(id, postSaveDto), HttpStatus.OK);
     }
 
     //게시글 삭제 - admin 전용

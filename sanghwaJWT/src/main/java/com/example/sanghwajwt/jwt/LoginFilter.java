@@ -33,7 +33,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         this.expiredMs = expiredMs;
     }
 
-    //UPA에서 필요로 하는 메서드, 왜 필요한지 서치
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //클라이언트 요청에서 username, password 탈취
@@ -50,14 +49,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //authenticationManager의 authenticate메서드가 검증에 성공할 경우 동작할 객체
     //이제 여기서 JWT를 발급하면됨
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication){
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
         //인자로 받은 authentication을 customUserDetails에 담기
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         // username 추출
         String username = customUserDetails.getUsername();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-            if (authorities != null && !authorities.isEmpty()) {
+        if (authorities != null && !authorities.isEmpty()) {
             Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
             if (iterator.hasNext()) {
                 GrantedAuthority auth = iterator.next();
@@ -87,7 +86,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed){
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
     }
 }

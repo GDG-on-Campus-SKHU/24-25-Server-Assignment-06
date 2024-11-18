@@ -17,7 +17,7 @@ public class JWTUtil {
 
 
     //JWTUtil이 호출될 때, 파라미터로 yml에 설정해놓은 값들을 불러옴
-    public JWTUtil(@Value("${jwt.secret}")String secret,
+    public JWTUtil(@Value("${jwt.secret}") String secret,
                    @Value("${jwt.access-token-validity-in-milliseconds}") long accessTokenValidityTime) {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
         this.accessTokenValidityTime = accessTokenValidityTime;
@@ -38,7 +38,7 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, String role, long expiredMs){
+    public String createJwt(String username, String role, long expiredMs) {
         return Jwts.builder()
                 //토큰을 만들때 claim메서드로 username과 role을 넣어줌
                 .claim("username", username)

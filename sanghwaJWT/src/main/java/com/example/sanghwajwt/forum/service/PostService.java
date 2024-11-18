@@ -24,7 +24,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostListResponseDto findAllPosts(){
+    public PostListResponseDto findAllPosts() {
         List<Post> posts = postRepository.findAll();
         List<PostResponseDto> postResponseDtos = posts.stream()
                 .map(PostResponseDto::from)

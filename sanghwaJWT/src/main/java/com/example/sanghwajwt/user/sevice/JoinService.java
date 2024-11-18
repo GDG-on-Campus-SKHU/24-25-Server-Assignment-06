@@ -14,10 +14,11 @@ public class JoinService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     //repondEntity 해야됨
-    public void joinProcess(JoinDto joinDto){
+    public void joinProcess(JoinDto joinDto) {
         Boolean isExist = userRepository.existsByUsername(joinDto.getUsername());
-        if(isExist){
+        if (isExist) {
             return;
         }
         //Role은 아직
@@ -29,21 +30,20 @@ public class JoinService {
         System.out.println("Role설정 완료");
     }
 
-    public void joinAdminProcess(JoinAdminDto joinAdminDto){
+    public void joinAdminProcess(JoinAdminDto joinAdminDto) {
         Boolean isExist = userRepository.existsByUsername(joinAdminDto.getUsername());
-        if(isExist) {
+        if (isExist) {
             return;
         }
         // adminKey를 따로 해시로 정의하는 로직 구현해야함
-        if(joinAdminDto.getAdminKey() == 1234) {
+        if (joinAdminDto.getAdminKey() == 1234) {
             UserEntity userEntity = userRepository.save(UserEntity.builder()
                     .username(joinAdminDto.getUsername())
                     .password(passwordEncoder.encode(joinAdminDto.getPassword()))
                     .role("ROLE_ADMIN")
                     .build());
             System.out.println("Role설정 완료");
-        }
-        else{
+        } else {
             return;
         }
     }
